@@ -2,12 +2,12 @@
 
 This app is a plugin for `kubectl`, it allows you to duplicate a running Pod and auto-exec into. The list of Pods is filterable, and you can select the namespace you want.
 
-You can also set these parameters for customization of the duplicata:
+You can also set these parameters for customization of the duplicate:
  - `cpu`
  - `memory`
  - `ttl`
 
-Already created duplicatas remain 4h (by default) and you can exec into them as long they're running.
+Already created duplicates remain 4h (by default) and you can exec into them as long they're running.
 
 ## Requirements
 
@@ -41,7 +41,7 @@ Flags:
 
 ### Install
 
-Download latest release from https://github.com/qonto/kubectl-duplicate/releases and extract `kubectl-duplicate` into your `/usr/loca/bin` and run `chmod -x /usr/local/bin/kubectl-duplicate`.
+Download latest release from https://github.com/qonto/kubectl-duplicate/releases and extract `kubectl-duplicate` into your `/usr/local/bin` and run `chmod -x /usr/local/bin/kubectl-duplicate`.
 
 ### Build
 
@@ -69,14 +69,14 @@ xattr -d com.apple.quarantine /usr/local/bin/kubectl-duplicate
         falcosidekick-5f44cb5bff-jh9wk
     ```
 
-* List pods with already created duplicatas:
+* List pods with already created duplicates:
 
     ```shell
     Search: █
     ? Pods: 
-        falcosidekick-duplicata-nglvr-f569r [duplicata]
-      > falcosidekick-duplicata-kzx9z-kpjh6 [duplicata]
-        falcosidekick-duplicata-mtb9x-lb29p [duplicata]
+        falcosidekick-duplicate-nglvr-f569r [duplicate]
+      > falcosidekick-duplicate-kzx9z-kpjh6 [duplicate]
+        falcosidekick-duplicate-mtb9x-lb29p [duplicate]
         falcosidekick-5f44cb5bff-94sqc
         falcosidekick-5f44cb5bff-jh9wk
         falcosidekick-ui-867f5d6f7-76lfx

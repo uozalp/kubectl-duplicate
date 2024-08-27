@@ -23,8 +23,8 @@ func Pod(pods []corev1.Pod, match string) corev1.Pod {
 
 	templates := &promptui.SelectTemplates{
 		// Label: `		`,
-		Active:   `{{ "> " | cyan | bold }}{{ .ObjectMeta.Name | cyan | bold }}{{if (index .ObjectMeta.Annotations "end-at")}}{{ " [duplicata]" }}{{ end }}`,
-		Inactive: `  {{ .ObjectMeta.Name }}{{if (index .ObjectMeta.Annotations "end-at")}}{{ " [duplicata]" }}{{ end }}`,
+		Active:   `{{ "> " | cyan | bold }}{{ .ObjectMeta.Name | cyan | bold }}{{if (index .ObjectMeta.Annotations "end-at")}}{{ " [duplicate]" }}{{ end }}`,
+		Inactive: `  {{ .ObjectMeta.Name }}{{if (index .ObjectMeta.Annotations "end-at")}}{{ " [duplicate]" }}{{ end }}`,
 		Details: `
 {{if (index .ObjectMeta.Annotations "end-at")}}{{ " End: " }}{{ index .ObjectMeta.Annotations "end-at" | bold }}{{ end }}`,
 	}

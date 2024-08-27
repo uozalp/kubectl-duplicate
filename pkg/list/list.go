@@ -55,12 +55,12 @@ func PodsForJob(clientset *kubernetes.Clientset, config config.Configuration, jo
 func sort(pods []corev1.Pod) []corev1.Pod {
 	var sortedPods []corev1.Pod
 	for _, i := range pods {
-		if strings.Contains(i.ObjectMeta.Name, "-duplicata-") {
+		if strings.Contains(i.ObjectMeta.Name, "-duplicate-") {
 			sortedPods = append(sortedPods, i)
 		}
 	}
 	for _, i := range pods {
-		if !strings.Contains(i.ObjectMeta.Name, "-duplicata-") {
+		if !strings.Contains(i.ObjectMeta.Name, "-duplicate-") {
 			sortedPods = append(sortedPods, i)
 		}
 	}

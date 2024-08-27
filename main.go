@@ -23,6 +23,8 @@ import (
 var config cfg.Configuration
 var version string
 var commit string
+var noAutoExec bool
+var kubeContext string
 
 func init() {
 	allnamespaces := kingpin.Flag("all-namespaces", "All Namespaces").Bool()
@@ -32,8 +34,13 @@ func init() {
 	config.CPU = kingpin.Flag("cpu", "CPU Request for the duplicated Pod").Short('c').String()
 	config.Memory = kingpin.Flag("memory", "Memory Request for the duplicated Pod").Short('m').String()
 	config.Kubeconfig = kingpin.Flag("kubeconfig", "Kube config file (override by env var KUBECONFIG").Short('k').Default(os.Getenv("HOME") + "/.kube/config").ExistingFile()
+	noAutoExecFlag := kingpin.Flag("no-auto-exec", "Do not automatically exec in to the container").Bool()
+	contextFlag := kingpin.Flag("context", "Kubernetes context to use").String()
 	v := kingpin.Flag("version", "Print version").Short('v').Bool()
 	kingpin.Parse()
+
+	noAutoExec = *noAutoExecFlag
+	kubeContext = *contextFlag
 
 	if *v {
 		fmt.Printf("Version: %s\nCommit: %s\n", version, commit)
@@ -47,10 +54,13 @@ func init() {
 	if kc := os.Getenv("KUBECONFIG"); kc != "" {
 		*config.Kubeconfig = kc
 	}
+
 }
 
 func main() {
-	kubeconfig, err := clientcmd.BuildConfigFromFlags("", *config.Kubeconfig)
+	loadingRules := &clientcmd.ClientConfigLoadingRules{ExplicitPath: *config.Kubeconfig}
+	configOverrides := &clientcmd.ConfigOverrides{CurrentContext: kubeContext}
+	kubeconfig, err := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, configOverrides).ClientConfig()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -85,11 +95,13 @@ func main() {
 		s.Stop()
 	}
 
-	startShell(pod.Name, container.Name, config.Namespace)
+	if !noAutoExec {
+		startShell(pod.Name, container.Name, config.Namespace)
+	}
 }
 
 func startShell(pod, container string, namespace *string) {
-	cmd := exec.Command(os.Getenv("SHELL"), "-c", "kubectl attach "+pod+" -n "+*namespace+" -t -i -c "+*namespace+"-"+container+"-exec")
+	cmd := exec.Command(os.Getenv("SHELL"), "-c", "kubectl attach "+pod+" -n "+*namespace+" -t -i -c "+container+"-exec")
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr

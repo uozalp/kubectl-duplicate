@@ -13,7 +13,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-// Job creates the Job for Duplicata
+// Job creates the Job for duplicate
 func Job(clientset *kubernetes.Clientset, config config.Configuration, deployment appsv1.Deployment, container corev1.Container) (*batchv1.Job, error) {
 	execAction := new(corev1.ExecAction)
 	execAction.Command = []string{"true"}
@@ -51,7 +51,7 @@ func Job(clientset *kubernetes.Clientset, config config.Configuration, deploymen
 
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
-			GenerateName: deployment.ObjectMeta.Name + "-duplicata-",
+			GenerateName: deployment.ObjectMeta.Name + "-duplicate-",
 			Annotations: map[string]string{
 				"end-at": endAt.Format("2006-01-02 15:04:05"),
 			},
@@ -65,7 +65,7 @@ func Job(clientset *kubernetes.Clientset, config config.Configuration, deploymen
 			BackoffLimit:            &backoffLimit,
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					GenerateName: deployment.ObjectMeta.Name + "-duplicata-",
+					GenerateName: deployment.ObjectMeta.Name + "-duplicate-",
 					Annotations: map[string]string{
 						"end-at": endAt.Format("2006-01-02 15:04:05"),
 					},
